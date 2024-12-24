@@ -19,7 +19,7 @@ const Home = () => {
     let trimValue = value.trim();
 
     if (!trimTitle && !trimValue) {
-      return toast.error("Both Missing");
+      return toast.error("Title and Content Missing");
     } else if (!trimValue) {
       return toast.error("Content Missing");
     } else if (!trimTitle) {
@@ -50,7 +50,6 @@ const Home = () => {
     setTitle("");
     setValue("");
     setSearchParams({});
-    // navigate("/");
   };
 
   useEffect(() => {
