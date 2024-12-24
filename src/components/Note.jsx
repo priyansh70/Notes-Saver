@@ -4,14 +4,26 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react"; // Import useState
 import { removeFromNotes } from "../redux/noteSlice";
 import { FormatDate } from "../utlis/formatDate";
+import { NavLink } from "react-router-dom";
 
 const Note = () => {
   const notes = useSelector((state) => state.note.notes);
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState({ open: false, id: null }); // Object state
   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
 
-  const handleDelete = (id) => {
-    dispatch(removeFromNotes(id));
+  function openModal(id) {
+    setShowModal({ open: true, id }); // Open modal with note ID
+  }
+
+  function closeModal() {
+    setShowModal({ open: false, id: null }); // Reset modal state
+  }
+
+  const handleDelete = () => {
+    console.log(showModal.id);
+    dispatch(removeFromNotes(showModal.id));
+    closeModal(); // Close modal after deleting
   };
 
   // Filter notes based on search term (by title or content)
@@ -20,7 +32,7 @@ const Note = () => {
   );
 
   return (
-    <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0">
+    <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0 relative">
       <div className="flex flex-col gap-y-3">
         {/* Search */}
         <div className="w-full flex gap-3 px-4 py-2  rounded-[0.3rem] border border-[rgba(128,121,121,0.3)]  mt-6">
@@ -69,7 +81,7 @@ const Note = () => {
                       </button>
                       <button
                         className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-pink-500"
-                        onClick={() => handleDelete(note?._id)}
+                        onClick={() => openModal(note?._id)}
                       >
                         <Trash2
                           className="text-black group-hover:text-pink-500"
@@ -78,7 +90,7 @@ const Note = () => {
                       </button>
 
                       <button className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-orange-500">
-                        <a
+                        <NavLink
                           href={`/notes/${note?._id}`}
                           target="_blank"
                         >
@@ -86,7 +98,7 @@ const Note = () => {
                             className="text-black group-hover:text-orange-500"
                             size={20}
                           />
-                        </a>
+                        </NavLink>
                       </button>
                       <button
                         className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-green-500"
@@ -118,6 +130,31 @@ const Note = () => {
               </div>
             )}
           </div>
+          {/* Confirmation Modal */}
+          {showModal.open && (
+            <div className="fixed inset-0 z-10 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+              <div className="bg-white p-6 rounded shadow-lg">
+                <h2 className="text-lg font-bold mb-4">Confirm Deletion</h2>
+                <p className="text-sm text-gray-600 mb-6">
+                  Are you sure you want to delete this note?
+                </p>
+                <div className="flex justify-end space-x-4">
+                  <button
+                    className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                    onClick={closeModal}
+                  >
+                    No
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                    onClick={handleDelete}
+                  >
+                    Yes
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
