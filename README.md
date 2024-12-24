@@ -7,6 +7,7 @@ Here’s a complete rewrite of the `README.md` file for your React + Vite projec
 This template provides a minimal setup for building a React application using Vite. It includes Hot Module Replacement (HMR) for fast refresh, Tailwind CSS for utility-first styling, and ESLint for code linting.
 
 ## Features
+
 - **Vite**: Ultra-fast development and build tooling.
 - **React**: Latest version for building modern UI components.
 - **Tailwind CSS**: Utility-first CSS framework for building custom designs without leaving your HTML.
@@ -28,14 +29,15 @@ This template provides a minimal setup for building a React application using Vi
    ```
 
 2. When prompted, choose the following:
-   - Project name: `paste`
+
+   - Project name: `Notes-Saver`
    - Framework: `React`
    - Variant: `JavaScript` or `TypeScript` as per your preference.
 
 3. Navigate into the project directory:
 
    ```bash
-   cd paste
+   cd Notes-Saver
    ```
 
 ### Step 2: Install Tailwind CSS
@@ -61,15 +63,12 @@ To add Tailwind CSS to your Vite + React project, follow these steps:
    ```js
    /** @type {import('tailwindcss').Config} */
    export default {
-     content: [
-       './index.html',
-       './src/**/*.{js,ts,jsx,tsx}',
-     ],
+     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
      theme: {
        extend: {},
      },
      plugins: [],
-   }
+   };
    ```
 
 4. Add the following lines to your `src/index.css` (or `src/main.css` if you’re using that):
@@ -114,6 +113,7 @@ This command will launch the development server, and your project will be availa
 Here is a list of all the important packages used in this project:
 
 ### Dependencies
+
 - **@reduxjs/toolkit**: A powerful library for managing application state with Redux.
 - **lucide-react**: Icon set for React that provides various UI icons.
 - **react**: The core React library for building user interfaces.
@@ -123,6 +123,7 @@ Here is a list of all the important packages used in this project:
 - **react-router-dom**: Provides routing functionalities in React apps.
 
 ### Dev Dependencies
+
 - **@eslint/js**: ESLint configurations for JavaScript.
 - **@types/react**: TypeScript type definitions for React (if you are using TypeScript).
 - **@types/react-dom**: TypeScript type definitions for React DOM (if you are using TypeScript).
@@ -144,7 +145,7 @@ Here is a list of all the important packages used in this project:
 Here is the basic structure of the project:
 
 ```
-paste/
+Notes-Saver/
 │
 ├── node_modules/
 ├── public/
@@ -172,15 +173,12 @@ The `tailwind.config.js` file is configured to scan all the files in the `src` d
 ```js
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },
   plugins: [],
-}
+};
 ```
 
 ---
