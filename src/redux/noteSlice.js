@@ -21,25 +21,28 @@ const noteSlice = createSlice({
         return;
       }
       // If the course is not in the Notes, add it to the Notes
-      state.notes.push(note);
-
-      // Update to localstorage
+      state.notes = [...state.notes, note];
       localStorage.setItem("notes", JSON.stringify(state.notes));
+
       // show toast
-      toast.success("Note added");
+      toast.success("Note Added Successfully!!");
     },
 
     updateNotes: (state, action) => {
-      const note = action.payload;
-      const index = state.notes.findIndex((item) => item._id === note._id);
+      const updatedNote = action.payload;
+      const index = state.notes.findIndex(
+        (item) => item._id === updatedNote._id
+      );
 
       if (index >= 0) {
-        // If the course is found in the Notes, update it
-        state.notes[index] = note;
-        // Update to localstorage
+        state.notes = state.notes.map((note, i) =>
+          i === index ? updatedNote : note
+        );
+        // Update LocalStorage
         localStorage.setItem("notes", JSON.stringify(state.notes));
-        // show toast
-        toast.success("Note updated");
+
+        // Toast
+        toast.success("Note Updated Successfully!!");
       }
     },
     removeFromNotes: (state, action) => {
@@ -54,13 +57,14 @@ const noteSlice = createSlice({
         // Update to localstorage
         localStorage.setItem("notes", JSON.stringify(state.notes));
         // show toast
-        toast.success("Note deleted");
+        toast.success("Note Delete Successfully!!");
       }
     },
     resetNote: (state) => {
       state.notes = [];
       // Update to localstorage
       localStorage.removeItem("notes");
+      toast.success("Note Reset Successfully!!");
     },
   },
 });
