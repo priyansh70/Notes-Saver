@@ -91,6 +91,7 @@ const Note = () => {
                       </button>
                       <NavLink
                         to={`/notes/${note?._id}`}
+                        target="_blank"
                       >
                         <button className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-orange-500">
                           <Eye
