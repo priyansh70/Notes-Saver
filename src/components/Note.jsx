@@ -13,6 +13,7 @@ const Note = () => {
   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
 
   function openModal(id) {
+    console.log(id)
     setShowModal({ open: true, id }); // Open modal with note ID
   }
 
@@ -68,17 +69,17 @@ const Note = () => {
                   {/* icons */}
                   <div className="flex flex-col gap-y-4 sm:items-end">
                     <div className="flex gap-2 flex-wrap sm:flex-nowrap">
-                      <button
+                      <NavLink to={`/?noteId=${note?._id}`}><button
                         className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-blue-500"
-                        // onClick={() => toast.error("Not working")}
+                      // onClick={() => toast.error("Not working")}
                       >
-                        <a href={`/?noteId=${note?._id}`}>
-                          <PencilLine
-                            className="text-black group-hover:text-blue-500"
-                            size={20}
-                          />
-                        </a>
+
+                        <PencilLine
+                          className="text-black group-hover:text-blue-500"
+                          size={20}
+                        />
                       </button>
+                      </NavLink>
                       <button
                         className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-pink-500"
                         onClick={() => openModal(note?._id)}
@@ -88,18 +89,16 @@ const Note = () => {
                           size={20}
                         />
                       </button>
-
-                      <button className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-orange-500">
-                        <NavLink
-                          href={`/notes/${note?._id}`}
-                          target="_blank"
-                        >
+                      <NavLink
+                        to={`/notes/${note?._id}`}
+                      >
+                        <button className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-orange-500">
                           <Eye
                             className="text-black group-hover:text-orange-500"
                             size={20}
                           />
-                        </NavLink>
-                      </button>
+                        </button>
+                      </NavLink>
                       <button
                         className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-green-500"
                         onClick={() => {
