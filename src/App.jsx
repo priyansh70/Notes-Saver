@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import Note from "./components/Note";
 import ViewNote from "./components/ViewNote";
 import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound"
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,17 @@ const router = createBrowserRouter([
         <>
           <Navbar />
           <ViewNote />
+        </>
+      </div>
+    ),
+  }, 
+  {
+    path: "*",
+    element: (
+      <div className="w-full h-full flex flex-col">
+        <>
+          <Navbar />
+          <NotFound />
         </>
       </div>
     ),

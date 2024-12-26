@@ -9,7 +9,7 @@ import { Toaster } from "react-hot-toast";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <div className="min-h-screen w-full overflow-hidden">
+      <div className="h-screen w-full overflow-hidden">
         <App />
         <Toaster position="top-right" />
       </div>
