@@ -62,24 +62,24 @@ const Home = () => {
     }
   }, [noteId, notes]);
 
-
   function handleTabKey(e) {
     if (e.key === "Tab") {
       e.preventDefault();
       const start = textArea.current.selectionStart;
       const end = textArea.current.selectionEnd;
-      const tabCharacter = '    '; // Replace with '\t' if you want a single tab character
+      const tabCharacter = "    "; // Replace with '\t' if you want a single tab character
 
       // Update the value with the tab character
-      textArea.current.value = textArea.current.value.substring(0, start) +
+      textArea.current.value =
+        textArea.current.value.substring(0, start) +
         tabCharacter +
         textArea.current.value.substring(end);
 
       // Move the cursor after the inserted tab character
-      textArea.current.selectionStart = textArea.current.selectionEnd = start + tabCharacter.length;
+      textArea.current.selectionStart = textArea.current.selectionEnd =
+        start + tabCharacter.length;
     }
   }
-
 
   return (
     <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0">
@@ -90,8 +90,9 @@ const Home = () => {
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className={`${noteId ? "w-[75%]" : "w-[85%]"
-              } text-black border border-input rounded-md p-2 flex-grow`}
+            className={`${
+              noteId ? "w-[75%]" : "w-[85%]"
+            } text-black border border-input rounded-md p-2 flex-grow`}
           />
           <button
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700  whitespace-nowrap"
@@ -133,6 +134,8 @@ const Home = () => {
               <button
                 className={`flex justify-center items-center  transition-all duration-300 ease-in-out group`}
                 onClick={() => {
+                  if (!textArea.current.value.length)
+                    return toast.error("Content is Empty!!");
                   navigator.clipboard.writeText(value);
                   toast.success("Copied to Clipboard", {
                     position: "top-right",
@@ -151,11 +154,10 @@ const Home = () => {
           <textarea
             ref={textArea}
             value={value}
-
             onChange={(e) => {
-              setValue(e.target.value)
+              setValue(e.target.value);
             }}
-            onKeyDown={e => handleTabKey(e)}
+            onKeyDown={(e) => handleTabKey(e)}
             placeholder="Write Your Content Here...."
             className="w-full p-3 focus-visible:ring-0 resize-none overflow-y-scroll"
             style={{
