@@ -153,12 +153,13 @@ const Home = () => {
           <textarea
             ref={textArea}
             value={value}
+            
             onChange={(e) => {
               setValue(e.target.value)
             }}
             onKeyDown={e => handleTabKey(e)}
             placeholder="Write Your Content Here...."
-            className="w-full p-3  focus-visible:ring-0"
+            className="w-full p-3 focus-visible:ring-0 resize-none overflow-y-scroll"
             style={{
               caretColor: "#000",
             }}
