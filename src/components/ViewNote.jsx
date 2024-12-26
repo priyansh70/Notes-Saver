@@ -6,14 +6,11 @@ import { useParams } from "react-router-dom";
 const ViewNote = () => {
   const { id } = useParams();
 
-  console.log(id);
-
   const notes = useSelector((state) => state.note.notes);
 
   // Filter notes based on search term (by title or content)
   const note = notes.filter((note) => note._id === id)[0];
 
-  console.log("Note->", note);
   return (
     <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0">
       <div className="flex flex-col gap-y-5 items-start">

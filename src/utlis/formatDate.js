@@ -4,7 +4,6 @@ export const FormatDate = (date) => {
 
   // Check if the date is valid
   if (isNaN(_date)) {
-    console.error('Invalid date');
     return 'Invalid Date';
   }
 

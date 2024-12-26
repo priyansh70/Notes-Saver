@@ -15,7 +15,6 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const createNote = () => {
-    // console.log(title.length);
     let trimTitle = title.trim();
     let trimValue = value.trim();
 

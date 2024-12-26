@@ -13,7 +13,6 @@ const Note = () => {
   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
 
   function openModal(id) {
-    console.log(id)
     setShowModal({ open: true, id }); // Open modal with note ID
   }
 
@@ -22,7 +21,6 @@ const Note = () => {
   }
 
   const handleDelete = () => {
-    console.log(showModal.id);
     dispatch(removeFromNotes(showModal.id));
     closeModal(); // Close modal after deleting
   };
@@ -31,8 +29,6 @@ const Note = () => {
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(searchTerm.trim().toLowerCase())
   );
-
-  console.log("Notes : ",filteredNotes)
 
   return (
     <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0 relative">

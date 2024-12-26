@@ -48,7 +48,6 @@ const noteSlice = createSlice({
     removeFromNotes: (state, action) => {
       const noteId = action.payload;
 
-      console.log(noteId);
       const index = state.notes.findIndex((item) => item._id === noteId);
 
       if (index >= 0) {
