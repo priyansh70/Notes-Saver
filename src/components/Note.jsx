@@ -29,8 +29,10 @@ const Note = () => {
 
   // Filter notes based on search term (by title or content)
   const filteredNotes = notes.filter((note) =>
-    note.title.toLowerCase().includes(searchTerm.toLowerCase())
+    note.title.toLowerCase().includes(searchTerm.trim().toLowerCase())
   );
+
+  console.log("Notes : ",filteredNotes)
 
   return (
     <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0 relative">
