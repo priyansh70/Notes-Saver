@@ -1,5 +1,5 @@
 import { Copy, PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { addToNotes, updateNotes } from "../redux/noteSlice";
@@ -8,6 +8,7 @@ import { useSearchParams } from "react-router-dom";
 const Home = () => {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
+  const textArea = useRef();
   const [searchParams, setSearchParams] = useSearchParams(); // Destructure useSearchParams
   const noteId = searchParams.get("noteId"); // Get noteId from the search params
   const notes = useSelector((state) => state.note.notes);
@@ -62,6 +63,25 @@ const Home = () => {
     }
   }, [noteId, notes]);
 
+
+  function handleTabKey(e) {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const start = textArea.current.selectionStart;
+      const end = textArea.current.selectionEnd;
+      const tabCharacter = '    '; // Replace with '\t' if you want a single tab character
+
+      // Update the value with the tab character
+      textArea.current.value = textArea.current.value.substring(0, start) +
+        tabCharacter +
+        textArea.current.value.substring(end);
+
+      // Move the cursor after the inserted tab character
+      textArea.current.selectionStart = textArea.current.selectionEnd = start + tabCharacter.length;
+    }
+  }
+
+
   return (
     <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0">
       <div className="flex flex-col gap-y-5 items-start">
@@ -72,9 +92,8 @@ const Home = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             // Dynamic width based on whether noteId is present
-            className={`${
-              noteId ? "w-[80%]" : "w-[85%]"
-            } text-black border border-input rounded-md p-2`}
+            className={`${noteId ? "w-[80%]" : "w-[85%]"
+              } text-black border border-input rounded-md p-2`}
           />
           <button
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
@@ -132,8 +151,12 @@ const Home = () => {
 
           {/* TextArea */}
           <textarea
+            ref={textArea}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              setValue(e.target.value)
+            }}
+            onKeyDown={e => handleTabKey(e)}
             placeholder="Write Your Content Here...."
             className="w-full p-3  focus-visible:ring-0"
             style={{
