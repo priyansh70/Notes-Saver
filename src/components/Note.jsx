@@ -2,7 +2,7 @@ import { Calendar, Copy, Eye, PencilLine, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react"; // Import useState
-import { removeFromNotes } from "../redux/noteSlice";
+import { removeFromNotes, resetNote } from "../redux/noteSlice";
 import { FormatDate } from "../utlis/formatDate";
 import { NavLink } from "react-router-dom";
 
@@ -13,7 +13,9 @@ const Note = () => {
   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
 
   function openModal(id) {
-    setShowModal({ open: true, id }); // Open modal with note ID
+    if (id) {
+      setShowModal({ open: true, id }); // Open modal with note ID
+    } else setShowModal({ open: true, id: null }); // Open modal with note ID
   }
 
   function closeModal() {
@@ -21,7 +23,9 @@ const Note = () => {
   }
 
   const handleDelete = () => {
-    dispatch(removeFromNotes(showModal.id));
+    if (!showModal.id) {
+      dispatch(resetNote());
+    } else dispatch(removeFromNotes(showModal.id));
     closeModal(); // Close modal after deleting
   };
 
@@ -46,9 +50,18 @@ const Note = () => {
 
         {/* All Notes */}
         <div className="flex flex-col border border-[rgba(128,121,121,0.3)] py-4 rounded-[0.4rem]">
-          <h2 className="px-4 text-4xl font-bold border-b border-[rgba(128,121,121,0.3)] pb-4">
-            All Notes
-          </h2>
+          <div className="flex flex-row items-center justify-between mx-3 border  p-4       border-[rgba(128,121,121,0.3)]">
+            <h2 className=" text-4xl font-bold">All Notes</h2>
+            <button
+              className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-red-500"
+              onClick={() => openModal()}
+            >
+              <Trash2
+                className="text-black group-hover:text-pink-500"
+                size={20}
+              />
+            </button>
+          </div>
           <div className="w-full px-4 pt-4 flex flex-col gap-y-5">
             {filteredNotes.length > 0 ? (
               filteredNotes.map((note) => (
