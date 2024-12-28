@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./page/Home";
-import Note from "./page/Note";
+import Note from "./page/Notes";
 import ViewNote from "./page/ViewNote";
 import NotFound from "./page/NotFound";
 import Navbar from "./components/Navbar";
