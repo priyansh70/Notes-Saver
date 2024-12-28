@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./components/Home";
-import Note from "./components/Note";
-import ViewNote from "./components/ViewNote";
+import Home from "./page/Home";
+import Note from "./page/Note";
+import ViewNote from "./page/ViewNote";
+import NotFound from "./page/NotFound";
 import Navbar from "./components/Navbar";
-import NotFound from "./components/NotFound"
 
 const router = createBrowserRouter([
   {
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         </>
       </div>
     ),
-  }, 
+  },
   {
     path: "*",
     element: (
