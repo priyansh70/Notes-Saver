@@ -77,5 +77,4 @@ const Note = ({ note }) => {
     </div>
   );
 };
-
 export default Note;
