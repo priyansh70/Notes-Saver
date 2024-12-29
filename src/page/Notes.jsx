@@ -76,8 +76,8 @@ const Notes = () => {
             </div>
           </div>
         </div>
-        {open && <ConfrimationPopup />}
       </div>
+      {open && <ConfrimationPopup />}
     </>
   );
 };

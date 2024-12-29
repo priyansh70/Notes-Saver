@@ -23,7 +23,7 @@ const ConfrimationPopup = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-10 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-10 bg-gray-600 bg-opacity-20 flex items-center justify-center">
       <div className="bg-white p-6 rounded shadow-lg">
         <h2 className="text-lg font-bold mb-4">Confirm Deletion</h2>
         <p className="text-sm text-gray-600 mb-6">
