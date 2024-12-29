@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { addToNotes, updateNotes } from "../redux/noteSlice";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Home = () => {
   const [value, setValue] = useState("");
@@ -13,6 +13,7 @@ const Home = () => {
   const noteId = searchParams.get("noteId"); // Get noteId from the search params
   const notes = useSelector((state) => state.note.notes);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const createNote = () => {
     let trimTitle = title.trim();
@@ -44,6 +45,7 @@ const Home = () => {
 
     // Remove the noteId from the URL after creating/updating a note
     setSearchParams({});
+    navigate("/notes");
   };
 
   const resetNote = () => {
