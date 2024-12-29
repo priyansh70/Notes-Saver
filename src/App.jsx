@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./page/Home";
-import Note from "./page/Notes";
+import Notes from "./page/Notes";
 import ViewNote from "./page/ViewNote";
 import NotFound from "./page/NotFound";
 import Navbar from "./components/Navbar";
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       <div className="w-full h-full flex flex-col">
         <>
           <Navbar />
-          <Note />
+          <Notes />
         </>
       </div>
     ),
