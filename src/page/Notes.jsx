@@ -45,7 +45,7 @@ const Notes = () => {
             <div className="flex flex-row items-center justify-between mx-3 border  p-4  border-[rgba(128,121,121,0.3)]">
               <h2 className=" text-4xl font-bold">All Notes</h2>
               <button
-                className="p-2 rounded-[0.2rem] bg-white border border-[#c7c7c7]  hover:bg-transparent group hover:border-red-500"
+                className="p-2 rounded-[0.2rem] border hover:bg-red-500 group border-red-500"
                 onClick={() => {
                   if (!notes.length) {
                     toast.error("Notes not found!!");
@@ -55,7 +55,7 @@ const Notes = () => {
                 }}
               >
                 <CircleX
-                  className="text-black group-hover:text-pink-500"
+                  className="text-red-500 group-hover:text-white"
                   size={20}
                 />
               </button>
