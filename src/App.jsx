@@ -4,6 +4,8 @@ import Notes from "./page/Notes";
 import ViewNote from "./page/ViewNote";
 import NotFound from "./page/NotFound";
 import Navbar from "./components/Navbar";
+import LoginPage from "./page/LoginPage";
+import SignupPage from "./page/SignupPage";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,28 @@ const router = createBrowserRouter([
         <>
           <Navbar />
           <ViewNote />
+        </>
+      </div>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <div className="w-full min-h-screen flex flex-col ">
+        <>
+          <Navbar />
+          <LoginPage />
+        </>
+      </div>
+    ),
+  },
+  {
+    path: "/signup",
+    element: (
+      <div className="w-full min-h-screen flex flex-col ">
+        <>
+          <Navbar />
+          <SignupPage />
         </>
       </div>
     ),
