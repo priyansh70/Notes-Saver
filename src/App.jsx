@@ -64,6 +64,28 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/login",
+    element: (
+      <div className="w-full min-h-screen flex flex-col ">
+        <>
+          <Navbar />
+          <LoginPage />
+        </>
+      </div>
+    ),
+  },
+  {
+    path: "/signup",
+    element: (
+      <div className="w-full min-h-screen flex flex-col ">
+        <>
+          <Navbar />
+          <SignupPage />
+        </>
+      </div>
+    ),
+  },
+  {
     path: "*",
     element: (
       <div className="w-full h-full flex flex-col">
