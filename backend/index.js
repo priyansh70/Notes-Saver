@@ -1,10 +1,15 @@
+// Import Package
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
-const note = require("./routes/note");
-require("dotenv").config();
 const cors = require("cors");
+require("dotenv").config();
 const bodyParser = require("body-parser");
+
+// Import Routes
+const note = require("./routes/note");
+const auth = require("./routes/auth");
+
+const app = express();
 
 const PORT = process.env.PORT;
 const DB_URL = process.env.DB_URL;
@@ -22,6 +27,7 @@ app.listen(PORT, () => {
 
 // Mounting
 app.use("/api/v1", note);
+app.use("/api/v1", auth);
 
 // Default Route
 app.get("/", (req, res) => {
