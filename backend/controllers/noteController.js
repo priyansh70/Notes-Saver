@@ -1,4 +1,4 @@
-const Note = require("../models/noteModal");
+const Note = require("../models/noteModel");
 
 exports.createNote = async (req, res) => {
   try {
@@ -13,7 +13,7 @@ exports.createNote = async (req, res) => {
 
     // Content Validation
     if (!content) {
-      return res.status(400).json({
+      return res.status(422).json({
         error: "Content is Empty",
       });
     }
@@ -21,7 +21,7 @@ exports.createNote = async (req, res) => {
     // Create Note
     const note = new Note({ title, content });
     const savedNote = await note.save();
-    return res.status(200).json({
+    return res.status(201).json({
       message: "Note Created Successfully!!",
       note: savedNote,
     });
