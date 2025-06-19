@@ -1,3 +1,5 @@
+import { CgProfile } from "react-icons/cg";
+
 export const NavbarData = [
   {
     path: "/",
@@ -6,5 +8,9 @@ export const NavbarData = [
   {
     path: "/notes",
     title: "Note",
+  },
+  {
+    path: "/login",
+    title: <CgProfile />,
   },
 ];

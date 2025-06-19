@@ -96,7 +96,7 @@ exports.login = async (req, res) => {
         message: "Logged In Successfully",
       });
     } else {
-      return res.status(401).json({ error: "Invalid Password" });
+      return res.status(401).json({ message: "Invalid Password" });
     }
     // Send the token back to the client.
   } catch (error) {
@@ -104,5 +104,22 @@ exports.login = async (req, res) => {
       message: error.message,
       sucess: false,
     });
+  }
+};
+
+exports.authStatus = (req, res) => {
+  console.log("Inside Auth Status");
+  console.log("REq:: ", req);
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ isAuthenticated: false });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return res.status(200).json({ isAuthenticated: true, user: decoded });
+  } catch (error) {
+    return res.status(403).json({ isAuthenticated: false });
   }
 };

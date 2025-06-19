@@ -3,6 +3,8 @@ const Note = require("../models/noteModel");
 exports.createNote = async (req, res) => {
   try {
     const { title, content } = req.body;
+    const { token } = req.cookies.get;
+    console.log(token);
 
     // Title Validation
     if (!title || title.length < 4 || title.length > 41) {
@@ -35,6 +37,8 @@ exports.createNote = async (req, res) => {
 
 exports.getAllNotes = async (req, res) => {
   try {
+    const user = req.user;
+    console.log(user);
     const notes = await Note.find({});
     return res.status(200).json({
       message: "Notes Fetched!!",

@@ -6,6 +6,7 @@ import NotFound from "./page/NotFound";
 import Navbar from "./components/Navbar";
 import LoginPage from "./page/LoginPage";
 import SignupPage from "./page/SignupPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -22,45 +23,27 @@ const router = createBrowserRouter([
   {
     path: "/notes",
     element: (
-      <div className="w-full h-full flex flex-col">
-        <>
-          <Navbar />
-          <Notes />
-        </>
-      </div>
+      <ProtectedRoute>
+        <div className="w-full h-full flex flex-col">
+          <>
+            <Navbar />
+            <Notes />
+          </>
+        </div>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/notes/:id",
     element: (
-      <div className="w-full h-full flex flex-col">
-        <>
-          <Navbar />
-          <ViewNote />
-        </>
-      </div>
-    ),
-  },
-  {
-    path: "/login",
-    element: (
-      <div className="w-full min-h-screen flex flex-col ">
-        <>
-          <Navbar />
-          <LoginPage />
-        </>
-      </div>
-    ),
-  },
-  {
-    path: "/signup",
-    element: (
-      <div className="w-full min-h-screen flex flex-col ">
-        <>
-          <Navbar />
-          <SignupPage />
-        </>
-      </div>
+      <ProtectedRoute>
+        <div className="w-full h-full flex flex-col">
+          <>
+            <Navbar />
+            <ViewNote />
+          </>
+        </div>
+      </ProtectedRoute>
     ),
   },
   {

@@ -4,9 +4,10 @@ const router = express.Router();
 
 // Import Controller
 const { getAllNotes, createNote } = require("../controllers/noteController");
+const authenticate = require("../middleware/authenticate");
 
 // Mapping Routes
-router.get("/notes", getAllNotes);
+router.get("/notes", authenticate, getAllNotes);
 router.post("/createNote", createNote);
 
 // Export

@@ -1,6 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 const AuthForm = ({ isLogin, onSubmit }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function isValidEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
+
+  function handleSubmit() {
+    // Check Empty Fields Case
+    if (isLogin) {
+      if (!email || !password) {
+        return toast.error("All Fields are required");
+      }
+    } else {
+      if (!name.trim() || !email || !password) {
+        return toast.error("All Fields are required");
+      }
+    }
+
+    // Check Email Validation
+    if (!isValidEmail(email)) {
+      return toast.error("Invalid Email");
+    }
+
+    // Password Validation
+    if (password.length < 8) {
+      return toast.error("Password should be at least 8 characters long");
+    }
+
+    // Clear All The Data
+    setName("");
+    setEmail("");
+    setPassword("");
+
+    // Submit Form
+    onSubmit(
+      isLogin ? { email, password } : { name: name.trim(), email, password }
+    );
+  }
   return (
     <div className="mx-auto max-w-xs">
       <div className="flex flex-col items-center">
@@ -44,20 +86,26 @@ const AuthForm = ({ isLogin, onSubmit }) => {
           className="w-full px-8 py-4 mb-5 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
           type="text"
           placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       )}
       <input
         className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
         type="email"
         placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
         type="password"
         placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
       <button
-        onClick={onSubmit}
+        onClick={handleSubmit}
         className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out flex items-center justify-center focus:outline-none focus:shadow-outline"
       >
         <svg
