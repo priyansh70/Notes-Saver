@@ -7,7 +7,7 @@ import ConfrimationPopup from "./ConfrimationPopup";
 import { openModal } from "../redux/popupSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const Note = ({ note }) => {
+const Note = ({ note, onDelete }) => {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.popup.open);
 
@@ -80,7 +80,7 @@ const Note = ({ note }) => {
           </div>
         </div>
       </div>
-      {open && <ConfrimationPopup />}
+      {open && <ConfrimationPopup onConfirm={onDelete} />}
     </>
   );
 };

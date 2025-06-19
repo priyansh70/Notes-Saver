@@ -9,12 +9,17 @@ const noteSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 40,
   },
-  content: { type: String, required: true },
-  userID: {
+  content: {
+    type: String,
+    required: true
+  },
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
+}, {
+  timestamps: true,
 });
 
 // export Schema

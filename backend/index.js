@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const bodyParser = require("body-parser");
 
@@ -25,8 +26,13 @@ app.use(
     credentials: true, // Allow cookies to be sent
   })
 );
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 // Middleware
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 // PORT

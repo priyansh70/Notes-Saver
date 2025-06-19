@@ -2,13 +2,20 @@
 const express = require("express");
 const router = express.Router();
 
-// Import Controller
-const { getAllNotes, createNote } = require("../controllers/noteController");
-const authenticate = require("../middleware/authenticate");
+// Import Controller and Middleware
+const {
+  getAllNotes,
+  createNote,
+  updateNote,
+  deleteNote,
+} = require("../controllers/noteController");
+const auth = require("../middleware/auth");
 
-// Mapping Routes
-router.get("/notes", authenticate, getAllNotes);
-router.post("/createNote", createNote);
+// Mapping Routes (all routes require authentication)
+router.get("/notes", auth, getAllNotes);
+router.post("/createNote", auth, createNote);
+router.put("/notes/:id", auth, updateNote);
+router.delete("/notes/:id", auth, deleteNote);
 
 // Export
 module.exports = router;

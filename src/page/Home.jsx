@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { addToNotes, updateNotes } from "../redux/noteSlice";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { notesAPI } from "../services/api";
 
 const Home = () => {
   const [value, setValue] = useState("");
@@ -12,10 +13,18 @@ const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams(); // Destructure useSearchParams
   const noteId = searchParams.get("noteId"); // Get noteId from the search params
   const notes = useSelector((state) => state.note.notes);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const createNote = () => {
+  const createNote = async () => {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      toast.error("Please login to create notes");
+      navigate("/login");
+      return;
+    }
+
     let trimTitle = title.trim();
     let trimValue = value.trim();
 
@@ -26,26 +35,43 @@ const Home = () => {
     } else if (!trimTitle) {
       return toast.error("Title Missing");
     }
-    const note = {
-      title: trimTitle,
-      content: trimValue,
-      _id: noteId || crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-    };
 
-    if (noteId) {
-      // If noteId is present, update the note
-      dispatch(updateNotes(note));
-    } else {
-      dispatch(addToNotes(note));
+    try {
+      if (noteId) {
+        // Update existing note via API
+        const response = await notesAPI.updateNote(noteId, {
+          title: trimTitle,
+          content: trimValue,
+        });
+
+        const updatedNote = {
+          ...response.note,
+          _id: response.note._id || noteId,
+        };
+        dispatch(updateNotes(updatedNote));
+        toast.success("Note updated successfully!");
+      } else {
+        // Create new note via API
+        const response = await notesAPI.createNote({
+          title: trimTitle,
+          content: trimValue,
+        });
+
+        const newNote = {
+          ...response.note,
+          _id: response.note._id,
+          createdAt: response.note.createdAt || new Date().toISOString(),
+        };
+        dispatch(addToNotes(newNote));
+      }
+
+      setTitle("");
+      setValue("");
+      setSearchParams({});
+      navigate("/notes");
+    } catch (error) {
+      toast.error(error.message || "Failed to save note");
     }
-
-    setTitle("");
-    setValue("");
-
-    // Remove the noteId from the URL after creating/updating a note
-    setSearchParams({});
-    navigate("/notes");
   };
 
   const resetNote = () => {

@@ -1,4 +1,7 @@
+import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { initializeAuth } from "./redux/authSlice";
 import Home from "./page/Home";
 import Notes from "./page/Notes";
 import ViewNote from "./page/ViewNote";
@@ -23,27 +26,27 @@ const router = createBrowserRouter([
   {
     path: "/notes",
     element: (
-      <ProtectedRoute>
-        <div className="w-full h-full flex flex-col">
-          <>
-            <Navbar />
+      <div className="w-full h-full flex flex-col">
+        <>
+          <Navbar />
+          <ProtectedRoute>
             <Notes />
-          </>
-        </div>
-      </ProtectedRoute>
+          </ProtectedRoute>
+        </>
+      </div>
     ),
   },
   {
     path: "/notes/:id",
     element: (
-      <ProtectedRoute>
-        <div className="w-full h-full flex flex-col">
-          <>
-            <Navbar />
+      <div className="w-full h-full flex flex-col">
+        <>
+          <Navbar />
+          <ProtectedRoute>
             <ViewNote />
-          </>
-        </div>
-      </ProtectedRoute>
+          </ProtectedRoute>
+        </>
+      </div>
     ),
   },
   {
@@ -82,6 +85,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Initialize authentication state from localStorage
+    dispatch(initializeAuth());
+  }, [dispatch]);
+
   return <RouterProvider router={router} />;
 }
 

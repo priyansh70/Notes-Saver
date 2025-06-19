@@ -39,9 +39,32 @@ exports.signup = async (req, res) => {
     // Save the new user to the database.
     const savedUser = await user.save();
 
-    return res.status(201).json({
+    // Generate JWT token for automatic login after signup
+    const payload = {
+      userId: savedUser._id,
+      name: savedUser.name,
+      email: savedUser.email,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1d", // Token expires in 1 day
+    });
+
+    const options = {
+      expiresIn: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
+
+    // Set the JWT token as a cookie and return user data
+    return res.cookie("token", token, options).status(201).json({
+      success: true,
       message: "User Created Successfully",
-      user: savedUser,
+      user: {
+        _id: savedUser._id,
+        name: savedUser.name,
+        email: savedUser.email,
+      },
+      token,
     });
   } catch (error) {
     return res.status(500).json({
@@ -92,7 +115,11 @@ exports.login = async (req, res) => {
       return res.cookie("token", token, options).status(200).json({
         success: true,
         token,
-        user,
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        },
         message: "Logged In Successfully",
       });
     } else {
@@ -107,19 +134,17 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.authStatus = (req, res) => {
-  console.log("Inside Auth Status");
-  console.log("REq:: ", req);
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(401).json({ isAuthenticated: false });
-  }
-
+exports.logout = async (req, res) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    return res.status(200).json({ isAuthenticated: true, user: decoded });
+    // Clear the token cookie
+    return res.clearCookie("token").status(200).json({
+      success: true,
+      message: "Logged Out Successfully",
+    });
   } catch (error) {
-    return res.status(403).json({ isAuthenticated: false });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
