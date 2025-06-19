@@ -1,22 +1,50 @@
 import { CircleX } from "lucide-react";
-
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react"; // Import useState
+import { useState, useEffect } from "react";
 import Note from "../components/Note";
 import ConfrimationPopup from "../components/ConfrimationPopup";
 import toast from "react-hot-toast";
 import { openModal } from "../redux/popupSlice";
+import { setLoading, setError, setNotes, resetNote } from "../redux/noteSlice";
+import { notesAPI } from "../services/api";
 
 const Notes = () => {
-  const notes = useSelector((state) => state.note.notes);
+  const { notes, loading, error } = useSelector((state) => state.note);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const open = useSelector((state) => state.popup.open);
 
-  const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
+  const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
 
+  // Fetch notes when component mounts or when user logs in
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchNotes();
+    }
+  }, [isAuthenticated]);
+
+  const fetchNotes = async () => {
+    try {
+      dispatch(setLoading(true));
+      const response = await notesAPI.getAllNotes();
+      dispatch(setNotes(response.data));
+    } catch (error) {
+      dispatch(setError(error.message));
+      toast.error(error.message || "Failed to fetch notes");
+    }
+  };
+
   function handleOpenModal(id = null) {
-    dispatch(openModal(id)); // Dispatch the action with the note ID (or null)
+    dispatch(openModal(id));
   }
+
+  const handleResetAllNotes = () => {
+    if (!notes.length) {
+      toast.error("Notes not found!!");
+      return;
+    }
+    handleOpenModal(); // Open modal for confirmation
+  };
 
   // Filter notes based on search term (by title or content)
   const filteredNotes = notes.filter(
@@ -24,6 +52,22 @@ const Notes = () => {
       note.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
       note.content.toLowerCase().includes(searchTerm.trim().toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0 flex items-center justify-center">
+        <div className="text-2xl">Loading notes...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0 flex items-center justify-center">
+        <div className="text-2xl text-red-500">Error: {error}</div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -35,8 +79,8 @@ const Notes = () => {
               type="search"
               placeholder="Search note here..."
               className="focus:outline-none w-full bg-transparent"
-              value={searchTerm} // Bind the input to searchTerm state
-              onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
@@ -46,13 +90,8 @@ const Notes = () => {
               <h2 className=" text-4xl font-bold">All Notes</h2>
               <button
                 className="p-2 rounded-[0.2rem] border hover:bg-red-500 group border-red-500"
-                onClick={() => {
-                  if (!notes.length) {
-                    toast.error("Notes not found!!");
-                    return;
-                  }
-                  handleOpenModal();
-                }}
+                onClick={handleResetAllNotes}
+                title="Delete all notes"
               >
                 <CircleX
                   className="text-red-500 group-hover:text-white"
@@ -66,18 +105,19 @@ const Notes = () => {
                   <Note
                     note={note}
                     key={note?._id}
+                    onDelete={fetchNotes}
                   />
                 ))
               ) : (
-                <div className="text-2xl text-center w-full text-chileanFire-500">
-                  No Data Found
+                <div className="text-2xl text-center w-full text-gray-500">
+                  {searchTerm ? "No notes match your search" : "No notes found. Create your first note!"}
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
-      {open && <ConfrimationPopup />}
+      {open && <ConfrimationPopup onConfirm={fetchNotes} />}
     </>
   );
 };
