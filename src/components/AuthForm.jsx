@@ -1,6 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authAPI } from "../services/api";
+import { setLoading, loginSuccess, signupSuccess, authError } from "../redux/authSlice";
+
 const AuthForm = ({ isLogin, onSubmit }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      dispatch(authError("Email and password are required"));
+      return;
+    }
+
+    if (!isLogin && !formData.name) {
+      dispatch(authError("Name is required"));
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      dispatch(authError("Password must be at least 8 characters long"));
+      return;
+    }
+
+    dispatch(setLoading(true));
+
+    try {
+      let response;
+      if (isLogin) {
+        response = await authAPI.login({
+          email: formData.email,
+          password: formData.password,
+        });
+        dispatch(loginSuccess(response));
+      } else {
+        response = await authAPI.signup({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        });
+        dispatch(signupSuccess(response));
+      }
+
+      if (onSubmit) {
+        onSubmit();
+      }
+    } catch (error) {
+      dispatch(authError(error.message));
+    }
+  };
+
   return (
     <div className="mx-auto max-w-xs">
       <div className="flex flex-col items-center">
@@ -39,27 +105,42 @@ const AuthForm = ({ isLogin, onSubmit }) => {
         </div>
       </div>
 
-      {!isLogin && (
+      <form onSubmit={handleSubmit}>
+        {!isLogin && (
+          <input
+            className="w-full px-8 py-4 mb-5 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required={!isLogin}
+          />
+        )}
         <input
-          className="w-full px-8 py-4 mb-5 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-          type="text"
-          placeholder="Name"
+          className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
         />
-      )}
-      <input
-        className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-        type="email"
-        placeholder="Email"
-      />
-      <input
-        className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-        type="password"
-        placeholder="Password"
-      />
-      <button
-        onClick={onSubmit}
-        className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out flex items-center justify-center focus:outline-none focus:shadow-outline"
-      >
+        <input
+          className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleInputChange}
+          required
+          minLength={8}
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out flex items-center justify-center focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
+        >
         <svg
           className="w-6 h-6 -ml-2"
           fill="none"
@@ -76,8 +157,11 @@ const AuthForm = ({ isLogin, onSubmit }) => {
           />
           <path d="M20 8v6M23 11h-6" />
         </svg>
-        <span className="ml-3">Sign {isLogin ? "In" : "Up"}</span>
-      </button>
+          <span className="ml-3">
+            {loading ? "Processing..." : `Sign ${isLogin ? "In" : "Up"}`}
+          </span>
+        </button>
+      </form>
 
       <NavLink to={!isLogin ? "/login" : "/signup"}>
         <button className="mt-4 text-indigo-500 hover:underline">

@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import AuthForm from "../components/AuthForm";
 import AuthLayout from "../components/AuthLayout";
 
 const SignupPage = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
   const handleSubmit = () => {
-    console.log("Signup form submitted");
+    navigate("/", { replace: true });
   };
 
   return (
