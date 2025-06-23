@@ -1,5 +1,5 @@
 import React from "react";
-import { NavbarData } from "../data/Navbar";
+import { NavbarData } from "../data/NavbarData";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/authSlice";
