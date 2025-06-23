@@ -23,7 +23,7 @@ exports.createNote = async (req, res) => {
     const note = new Note({
       title,
       content,
-      userId
+      userId,
     });
     const savedNote = await note.save();
 
@@ -43,7 +43,11 @@ exports.createNote = async (req, res) => {
 
 exports.getAllNotes = async (req, res) => {
   try {
-    const notes = await Note.find({});
+    // req.user should be set by your auth middleware after verifying JWT
+    const userId = req.user.userId;
+    console.log(userId);
+    const notes = await Note.find({ userId: userId }); // Filter by user
+    console.log(notes);
     return res.status(200).json({
       success: true,
       message: "Notes Fetched!!",
