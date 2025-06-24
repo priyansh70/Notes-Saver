@@ -1,4 +1,4 @@
-const API_BASE_URL = "/api/v1";
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // Helper function to get auth headers
 const getAuthHeaders = () => {
@@ -12,11 +12,11 @@ const getAuthHeaders = () => {
 // Helper function to handle API responses
 const handleResponse = async (response) => {
   const data = await response.json();
-  
+
   if (!response.ok) {
     throw new Error(data.error || data.message || "Something went wrong");
   }
-  
+
   return data;
 };
 
