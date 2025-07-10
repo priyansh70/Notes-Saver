@@ -17,18 +17,11 @@ const PORT = process.env.PORT || 3000;
 const DB_URL = process.env.DB_URL;
 
 // Cors
+// Enable CORS for all origins (you can restrict this later)
 app.use(
   cors({
-    origin: "https://notes-saver-priyansh.netlify.app/", // Correctly set to the frontend base URL
-    methods: ["GET", "POST"], // Allowed methods
-    allowedHeaders: ["Content-Type"], // Allowed headers
-    credentials: true, // Allow cookies to be sent
-  })
-);
-app.use(
-  cors({
-    origin: "https://notes-saver-priyansh.netlify.app/",
-    credentials: true,
+    origin: "https://notes-saver-priyansh.netlify.app", // or "*" for all origins (less secure)
+    credentials: true, // if you're sending cookies
   })
 );
 
