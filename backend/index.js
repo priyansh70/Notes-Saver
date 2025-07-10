@@ -13,13 +13,13 @@ const auth = require("./routes/auth");
 const app = express();
 app.use(cookieParser());
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const DB_URL = process.env.DB_URL;
 
 // Cors
 app.use(
   cors({
-    origin: "http://localhost:5173", // Correctly set to the frontend base URL
+    origin: "https://notes-saver-priyansh.netlify.app/", // Correctly set to the frontend base URL
     methods: ["GET", "POST"], // Allowed methods
     allowedHeaders: ["Content-Type"], // Allowed headers
     credentials: true, // Allow cookies to be sent
@@ -27,7 +27,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://notes-saver-priyansh.netlify.app/",
     credentials: true,
   })
 );

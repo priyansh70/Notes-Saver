@@ -95,7 +95,7 @@ Start the development server with the following command:
 npm run dev
 ```
 
-This command will launch the development server, and your project will be available at `http://localhost:5173`.
+This command will launch the development server, and your project will be available at `https://notes-saver-priyansh.netlify.app/`.
 
 ---
 

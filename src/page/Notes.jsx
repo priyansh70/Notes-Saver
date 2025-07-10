@@ -110,7 +110,9 @@ const Notes = () => {
                 ))
               ) : (
                 <div className="text-2xl text-center w-full text-gray-500">
-                  {searchTerm ? "No notes match your search" : "No notes found. Create your first note!"}
+                  {searchTerm
+                    ? "No notes match your search"
+                    : "No notes found. Create your first note!"}
                 </div>
               )}
             </div>
